@@ -40,15 +40,13 @@ byte byte_mult(byte op1, byte op2)
 int neoPixelPin = 3;
 
 // How many NeoPixels we will be using, charge accordingly
-int pixelCount = 16;
+int pixelCount = <%= pixels %>;
 
 // Instatiate the NeoPixel from the ibrary
 Adafruit_NeoPixel strip = Adafruit_NeoPixel(pixelCount, neoPixelPin, NEO_GRB + NEO_KHZ800);
 
 void setup() {
-  //Serial.begin(9600);           // set up Serial library at 9600 bps
   strip.begin();
-  //Serial.println("started!");  // prints hello with ending line break 
 }
 
 void loop() {
@@ -63,20 +61,11 @@ void calculate_strip() {
   unsigned long mils = millis();
   for (int i; i < pixelCount; i++) {
     unsigned long this_phase = long_div(i, pixelCount - 1);
-    unsigned long lamp_phase[3] = {this_phase, this_phase, this_phase};
+// beginning of generated code
 
-    unsigned long phasor1[3];
-    unsigned long phasor1_cycle[3] = {7000, 5000, 5000};
-    phasor(mils, phasor1_cycle, phasor1);
+<%= body %>
 
-    unsigned long addmodulo1[3];
-    addmodulo(lamp_phase, phasor1, addmodulo1);
-    
-    unsigned long times1[3];
-    unsigned long op2[3] = {150, 150, 150};
-    times(addmodulo1, op2, times1);
-
-    strip.setPixelColor(i, neopix_gamma[times1[0]], neopix_gamma[times1[1]], neopix_gamma[times1[2]]);
+// end of generated code
   }
   strip.show();
 }

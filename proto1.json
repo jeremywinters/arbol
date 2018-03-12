@@ -1,6 +1,6 @@
 {
 	"type": "physical_strip",
-	"lamps": 16,
+	"lamps": 100,
 	"calc": {
 		"type": "times",
 		"op1": {

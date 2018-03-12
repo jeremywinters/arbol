@@ -2,6 +2,7 @@ require 'json'
 require 'pp'
 require 'securerandom'
 require 'tsort'
+require 'erb'
 
 class TsortableHash < Hash
   include TSort
@@ -10,8 +11,6 @@ class TsortableHash < Hash
     fetch(node).each(&block)
   end
 end
-
-tree = JSON.parse(File.read('proto1.json'))
 
 class Base
   attr_accessor :name
@@ -39,22 +38,21 @@ class Base
     param_keys.map { |k| self.send("#{k}").name }
   end
   
-  def internal_rep
+  def arduino_code
     nil
   end
   
   def append_tsortable(tsortable)
-    puts self.class
     tsortable[@name] = depends_on
     param_keys.each do |k|
       self.send("#{k}").append_tsortable(tsortable)
     end
   end
   
-  def add_internal_rep(ir)
-    ir[@name] = internal_rep
+  def add_arduino_code(ir)
+    ir[@name] = arduino_code
     param_keys.each do |k|
-      self.send("#{k}").add_internal_rep(ir)
+      self.send("#{k}").add_arduino_code(ir)
     end
   end
 end
@@ -67,11 +65,11 @@ class Times < Base
     [:op1, :op2]
   end
   
-  def internal_rep
-    {
-      op1: @op1.name,
-      op2: @op2.name
-    }
+  def arduino_code
+    [
+      "unsigned long #{@name}[3];",
+      "times(#{@op1.name}, #{@op2.name}, #{@name});"
+    ]
   end
 end
 
@@ -83,11 +81,11 @@ class AddModulo < Base
     [:op1, :op2]
   end
   
-  def internal_rep
-    {
-      op1: @op1.name,
-      op2: @op2.name
-    }
+  def arduino_code
+    [
+      "unsigned long #{@name}[3];",
+      "addmodulo(#{@op1.name}, #{@op2.name}, #{@name});"
+    ]
   end
 end
 
@@ -99,10 +97,10 @@ class Const < Base
     @value = params['value']
   end
 
-  def internal_rep
-    {
-      value: @value
-    }
+  def arduino_code
+    [
+      "unsigned long #{@name}[3] = {#{@value.join(',')}};"
+    ]
   end
 end
 
@@ -113,18 +111,23 @@ class Phasor < Base
     [:cycles]
   end
 
-  def internal_rep
-    {
-      op1: @cycles.name
-    }
+  def arduino_code
+    [
+      "unsigned long #{@name}[3];",
+      "phasor(mils, #{@cycles.name}, #{@name});"
+    ]
   end
 end
 
 class LampPhase < Base
+  def arduino_code
+    [
+      "unsigned long #{@name}[3] = {this_phase, this_phase, this_phase};"
+    ]
+  end
 end
 
 def builder(params)
-  puts params['type']
   cl = case params['type']
     when 'times' then Times
     when 'addmodulo' then AddModulo
@@ -135,22 +138,44 @@ def builder(params)
   cl.new(params)
 end
 
-t = builder(
-  tree["calc"]
+def custom_arduino_script_body(structure)
+  # run the builder
+  t = builder(
+    structure["calc"]
+  )
+  
+  # create a tsortable hash and populate it with the nodes
+  ts = TsortableHash.new
+  t.append_tsortable(ts)
+  
+  # creates a hash containing all the code keyed by node name
+  code = {}
+  t.add_arduino_code(code)
+  
+  ret = []
+  # run tsort... then append the lines of code in the order they should be executed
+  t = ts.tsort
+  t.each do |func|
+    ret << ''
+    code[func].each do |stmt|
+      ret << stmt
+    end
+  end
+  
+  # last output needs to be passed to the strip
+  ret << ''
+  ret << "// output"
+  ret << "strip.setPixelColor(i, neopix_gamma[#{t.last}[0]], neopix_gamma[#{t.last}[1]], neopix_gamma[#{t.last}[2]]);"
+  ret
+end
+
+# parse the file
+tree = JSON.parse(
+  File.read(ARGV[0])
 )
+  
+body = custom_arduino_script_body(tree).join("\n")
+pixels = tree['lamps']
+puts ERB.new(IO.read('arduino_library.ino.erb')).result(binding)
 
-ts = TsortableHash.new
 
-t.append_tsortable(ts)
-
-ir = {}
-
-t.add_internal_rep(ir)
-puts "PARSED TREE"
-pp t
-
-puts "TSORT"
-pp ts.tsort
-
-puts "IR"
-pp ir
