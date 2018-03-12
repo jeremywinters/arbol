@@ -1,26 +1,22 @@
 {
 	"type": "physical_strip",
-	"name": "pstrip",
 	"lamps": 16,
 	"calc": {
 		"type": "times",
 		"op1": {
 			"type": "const",
-			"name": "rgb",
 			"value": [150, 150, 150]
 		},
 		"op2": {
-			"value": {
-				"type": "addmodulo",
-				"op1": {
-					"type": "lamp_phase"
-				},
-				"op2": {
-					"type": "phasor",
-					"cycles": {
-						"type": "const",
-						"value": [7000, 5000, 5000]
-					}
+			"type": "addmodulo",
+			"op1": {
+				"type": "lamp_phase"
+			},
+			"op2": {
+				"type": "phasor",
+				"cycles": {
+					"type": "const",
+					"value": [7000, 5000, 5000]
 				}
 			}
 		}
