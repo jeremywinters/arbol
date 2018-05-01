@@ -1,0 +1,63 @@
+{
+	"type": "physical_strip",
+	"lamps": 16,
+	"pin" : 4,
+	"refs": [
+    {
+    	"type": "create_ref",
+    	"identifier": "lfo1",
+    	"value": {
+    		"type": "lfo_triangle",
+    		"cycle_ms": {
+      		"type": "add",
+      		"op1" :{
+        		"type": "times",
+        		"op1" : {
+          		"type": "lfo_triangle",
+          		"cycle_ms": {
+            		"type": "const",
+            		"value": [10000, 9000, 4243]
+              }
+            },
+            "op2" : {
+              "type": "const",
+              "value": [10000, 12000, 15000]
+            }
+          },
+          "op2" : {
+            "type": "const",
+            "value" : [1000, 1000, 1000]
+          }
+    		} 
+  	  }
+  	},
+    {
+    	"type": "create_ref",
+    	"identifier": "offset",
+    	"value": {
+    		"type": "addmodulo",
+    		"op1": {
+          "type": "lamp_phase"
+    		},
+    		"op2": {
+      		"type": "phasor",
+      		"cycles": {
+        		"type": "const",
+        		"value": [1000, 1000, 1000]
+      		}
+    		}
+  	  }
+  	}
+  ],
+	"calc": {
+		"type": "times",
+		"op1": {
+			"type": "const",
+			"value": [100, 100, 100]
+		},
+		"op2": {
+  		"type": "ref",
+  		"identifier" : "lfo1"
+		}
+	}
+}

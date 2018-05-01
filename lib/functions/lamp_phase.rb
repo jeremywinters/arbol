@@ -1,0 +1,14 @@
+class LampPhase < Base
+  Irontofu.add_mapped_class('lamp_phase', LampPhase, nil)
+  def arduino_code
+    [
+      "long #{@name}[3] = {this_phase, this_phase, this_phase};"
+    ]
+  end
+end
+
+def lamp_phase
+  {
+    type: 'lamp_phase'
+  }
+end
