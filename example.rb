@@ -9,7 +9,7 @@ strip(
   116,
   4,
   [0.5, 0.5, 0.5] * cubed * add_modulo(
-    lfo_triangle([19000, 19150, 18852]),
+    lfo_triangle([4000, 6842, 7712]),
     lamp_phase
   )
 );

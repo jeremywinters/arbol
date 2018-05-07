@@ -22,6 +22,17 @@ class AddConstrain < Base
       "add_constrain(#{@op1.name}, #{@op2.name}, #{@name});"
     ]
   end
+  
+  def documentation
+%{
+### add_constrain(op1, op2)
+
+* **op1** - operator1
+* **op2** - operator2
+
+Adds op1 and op2, then constrains the result between 0.0-~1.0.
+}
+  end
 end
 
 def add_constrain(op1, op2)
