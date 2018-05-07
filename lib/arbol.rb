@@ -20,7 +20,7 @@ def resolve(val)
     when val.class == Array then return my_const(
       val.map { |i| scale_correctly(i) }
     )
-    when val.class == Hash then return val
+    when val.class == ArbolHash then return val
   end
 end
 
@@ -42,13 +42,25 @@ def strip(lamps, pin, calc)
   }
 end
 
-def file_split(path)
-  File.read(path).split(';').select { |l| l.strip != '' }
+def strip_comments(script)
+  t = []
+  script.split("\n").each do |line|
+    if line.match(/\#/)
+      t << line.split('#',2)[0]
+    else
+      t << line
+    end
+  end
+  t.join
+end
+
+def script_split(script)
+  script.split(';').select { |l| l.strip != '' }
 end
 
 def stmts_to_structure(stmts)
   refs = []
-  refinjects = []
+  refinjects = ['using RefineBasics; ']
   stmts.each do |stmt|
     if stmt.match(/(\w|\s)+={1}(\w|\s)+/)
       ref_name = stmt.match(/\w+/)[0]
@@ -73,8 +85,10 @@ def interpret(file_path)
   tree = nil
   if file_path.match(/\.rb$/)
     tree = stmts_to_structure(
-      file_split(
-        file_path
+      script_split(
+        strip_comments(
+          File.read(file_path)
+        )
       )
     )
   elsif file_path.match(/\.json$/)
@@ -86,10 +100,17 @@ def interpret(file_path)
       symbolize_names: true
     )
   end
+  tree
+end
+
+def tree_to_file(tree, path)
   pp tree
   body = custom_arduino_script_body(tree).join("\n")
-  pixels = tree['lamps']
-  pin = tree['pin']
+  pixels = tree[:lamps]
+  pin = tree[:pin]
   code = Irontofu.libs.join("\n\n")
-  puts ERB.new(IO.read("#{File.dirname(__FILE__)}/templates/arduino_library.ino.erb")).result(binding)
+  puts "writing to script file #{path}"
+  f = File.open(path, 'w')
+  f.puts ERB.new(IO.read("#{File.dirname(__FILE__)}/templates/arduino_library.ino.erb")).result(binding)
+  f.close
 end

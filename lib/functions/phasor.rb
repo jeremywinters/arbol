@@ -23,8 +23,8 @@ class Phasor < Base
 end
 
 def phasor(cycles)
-  {
-    type: 'phasor',
-    cycles: resolve(cycles)
-  }
+  h = ArbolHash.new
+  h[:type] = 'phasor'
+  h[:cycles] = resolve(cycles)
+  h
 end

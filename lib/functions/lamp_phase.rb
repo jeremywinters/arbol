@@ -8,7 +8,7 @@ class LampPhase < Base
 end
 
 def lamp_phase
-  {
-    type: 'lamp_phase'
-  }
+  h = ArbolHash.new
+  h[:type] = 'lamp_phase'
+  h
 end

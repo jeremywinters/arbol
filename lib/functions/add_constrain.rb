@@ -24,10 +24,10 @@ class AddConstrain < Base
   end
 end
 
-def add_constrain()
-  {
-    type: 'add_constrain',
-    op1: op1,
-    op2: op2
-  }
+def add_constrain(op1, op2)
+  h = ArbolHash.new
+  h[:type] = 'add_constrain'
+  h[:op1] = resolve(op1)
+  h[:op2] = resolve(op2)
+  h
 end

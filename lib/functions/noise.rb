@@ -11,13 +11,13 @@ class Noise < Base
   def arduino_code
     [
       "long #{@name}[3];",
-      "noise(mils, #{@name});"
+      "noise(#{@name});"
     ]
   end
 end
 
 def noise
-  {
-    type: 'noise'
-  }
+  h = ArbolHash.new
+  h[:type] = 'noise'
+  h
 end

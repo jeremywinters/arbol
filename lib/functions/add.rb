@@ -28,10 +28,10 @@ class Add < Base
   end
 end
 
-def add()
-  {
-    type: 'add',
-    op1: op1,
-    op2: op2
-  }
+def add(op1, op2)
+  h = ArbolHash.new
+  h[:type] = 'add'
+  h[:op1] = resolve(op1)
+  h[:op2] = resolve(op2)
+  h
 end

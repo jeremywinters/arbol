@@ -16,14 +16,14 @@ class Ref < Base
   
   def arduino_code
     [
-      "long #{@name} = #{@ref_name};"
+      "long *#{@name} = #{@ref_name};"
     ]
   end
 end
 
 def ref(identifier)
-  {
-    type: 'ref',
-    identifier: identifier
-  }
+  h = ArbolHash.new
+  h[:type] = 'ref'
+  h[:identifier] = identifier
+  h
 end

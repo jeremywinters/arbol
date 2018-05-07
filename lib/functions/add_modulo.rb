@@ -24,10 +24,10 @@ class AddModulo < Base
   end
 end
 
-def add_modulo()
-  {
-    type: 'add_modulo',
-    op1: resolve(op1),
-    op2: resolve(op2)
-  }
+def add_modulo(op1, op2)
+  h = ArbolHash.new
+  h[:type] = 'add_modulo'
+  h[:op1] = resolve(op1)
+  h[:op2] = resolve(op2)
+  h
 end

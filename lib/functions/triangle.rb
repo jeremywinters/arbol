@@ -1,11 +1,9 @@
-class LFOTriangle < Base
+class PhaseTriangle < Base
   Irontofu.add_mapped_class(
-    'lfo_triangle', 
-    LFOTriangle,
-%{long twice_int_scale_vec[3] = {long(INTEGER_SCALE * 2), long(INTEGER_SCALE * 2), long(INTEGER_SCALE * 2)};
-void lfo_triangle(long mils, long cycle_ms[3], long out[3]) {
-  long phase[3];
-  phasor(mils, cycle_ms, phase);
+    'triangle', 
+    PhaseTriangle,
+%{//long twice_int_scale_vec[3] = {long(INTEGER_SCALE * 2), long(INTEGER_SCALE * 2), long(INTEGER_SCALE * 2)};
+void triangle(long mils, long phase[3], long out[3]) {
   long times_result[3];
   times(phase, twice_int_scale_vec, times_result);
   if(times_result[0] > INTEGER_SCALE) { out[0] = (twice_int_scale_vec[0] - times_result[0]); } else { out[0] = times_result[0]; }
@@ -13,23 +11,23 @@ void lfo_triangle(long mils, long cycle_ms[3], long out[3]) {
   if(times_result[2] > INTEGER_SCALE) { out[2] = (twice_int_scale_vec[2] - times_result[2]); } else { out[2] = times_result[2]; }
 }}
   )
-  attr_accessor :cycle_ms
+  attr_accessor :phase
   
   def param_keys
-    [:cycle_ms]
+    [:phase]
   end
 
   def arduino_code
     [
       "long #{@name}[3];",
-      "lfo_triangle(mils, #{@cycle_ms.name}, #{@name});"
+      "triangle(mils, #{@phase.name}, #{@name});"
     ]
   end
 end
 
-def lfo_triangle(cycle_ms)
+def triangle(phase)
   h = ArbolHash.new
-  h[:type] = 'lfo_triangle'
-  h[:cycle_ms] = resolve(cycle_ms)
+  h[:type] = 'triangle'
+  h[:phase] = resolve(phase)
   h
 end

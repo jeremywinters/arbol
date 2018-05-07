@@ -25,9 +25,9 @@ class Times < Base
 end
 
 def times(op1, op2)
-  {
-    type: 'times',
-    op1: resolve(op1),
-    op2: resolve(op2)
-  }
+  h = ArbolHash.new
+  h[:type] = 'times'
+  h[:op1] = resolve(op1)
+  h[:op2] = resolve(op2)
+  h
 end

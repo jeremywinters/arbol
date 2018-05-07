@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+
+require 'arbol'
+
+tree_to_file(
+  interpret(ARGV[0]),
+  ARGV[1]
+)

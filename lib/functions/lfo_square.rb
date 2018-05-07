@@ -28,8 +28,8 @@ void lfo_square(long mils, long cycle_ms[3], long out[3]) {
 end
 
 def lfo_square(cycle_ms)
-  {
-    type: 'lfo_square',
-    cycle_ms: resolve(cycle_ms)
-  }
+  h = ArbolHash.new
+  h[:type] = 'lfo_square'
+  h[:cycle_ms] = resolve(cycle_ms)
+  h
 end

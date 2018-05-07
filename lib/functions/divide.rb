@@ -25,9 +25,9 @@ class Divide < Base
 end
 
 def divide(numerator, denominator)
-  {
-    type: 'divide',
-    numerator: resolve(numerator),
-    denominator: resolve(denominator)
-  }
+  h = ArbolHash.new
+  h[:type] = 'add'
+  h[:numerator] = resolve(numerator)
+  h[:denominator] = resolve(denominator)
+  h
 end

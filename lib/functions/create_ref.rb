@@ -21,15 +21,15 @@ class CreateRef < Base
   
   def arduino_code
     [
-      "long #{@name} = #{@value.name};"
+      "long *#{@name} = #{@value.name};"
     ]
   end
 end
 
 def create_ref(identifier, value)
-  {
-    type: 'create_ref',
-    identifier: identifier,
-    value: resolve(value)
-  }
+  h = ArbolHash.new
+  h[:type] = 'create_ref'
+  h[:identifier] = identifier
+  h[:value] = resolve(value)
+  h
 end

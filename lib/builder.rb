@@ -54,6 +54,9 @@ def custom_arduino_script_body(structure)
 
   # creates a hash containing all the code keyed by node name
   code = {}
+  
+  # creates an array of code for top_level_scope declarations
+  top_level_scope = []
 
   # first append the ref nodes
   ref_builders.each { |r| r.add_arduino_code(code) }
@@ -74,7 +77,7 @@ def custom_arduino_script_body(structure)
   # last output needs to be passed to the strip
   ret << ''
   ret << "// output"
-  ret << "strip.setPixelColor(i, neopix_gamma[#{t.last}[0]], neopix_gamma[#{t.last}[1]], neopix_gamma[#{t.last}[2]]);"
+  ret << "strip.setPixelColor(i, (byte)long_mult(255, #{t.last}[0]), (byte)long_mult(255, #{t.last}[1]), (byte)long_mult(255, #{t.last}[2]));"
   ret
 end
 
