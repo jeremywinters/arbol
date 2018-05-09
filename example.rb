@@ -3,13 +3,13 @@ circle = 1.0 - add_modulo(
   ((lfo_triangle(7973) * 4.0) + 1.0) * (triangle(lamp_phase))
 );
 
-cubed = circle * circle * circle;
+# cubed = circle * circle * circle;
 
 strip(
-  116,
+  256,
   4,
-  [0.5, 0.5, 0.5] * cubed * add_modulo(
+  gamma([0.5, 0.5, 0.5] * circle * add_modulo(
     lfo_triangle([4000, 6842, 7712]),
     lamp_phase
-  )
+  ))
 );
