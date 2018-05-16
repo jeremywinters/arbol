@@ -354,15 +354,15 @@ class Base
 
   def add_arduino_code(ir)
     ir[@name] = arduino_code
-#     if top_level_scope_arduino_code
-#       top_level_scope << top_level_scope_arduino_code
-#     end
     param_keys.each do |k|
       self.send("#{k}").add_arduino_code(ir)
     end
   end
 
-  def function_code
-    nil
+  def add_top_level_scope(ir)
+    ir[@name] = top_level_scope_code
+    param_keys.each do |k|
+      self.send("#{k}").add_top_level_scope(ir)
+    end
   end
 end

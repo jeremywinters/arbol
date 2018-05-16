@@ -5,6 +5,10 @@ class LampPhase < Base
       "long #{@name}[3] = {this_phase, this_phase, this_phase};"
     ]
   end
+
+  def top_level_scope_code
+    []
+  end
 end
 
 def lamp_phase

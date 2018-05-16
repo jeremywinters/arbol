@@ -16,6 +16,11 @@ class Ref < Base
   
   def arduino_code
     [
+    ]
+  end
+
+  def top_level_scope_code
+    [
       "long *#{@name} = #{@ref_name};"
     ]
   end

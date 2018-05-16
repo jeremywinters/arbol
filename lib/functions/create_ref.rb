@@ -20,6 +20,10 @@ class CreateRef < Base
   end
   
   def arduino_code
+    []
+  end
+
+  def top_level_scope_code
     [
       "long *#{@name} = #{@value.name};"
     ]

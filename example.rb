@@ -6,10 +6,10 @@ circle = 1.0 - add_modulo(
 # cubed = circle * circle * circle;
 
 strip(
-  256,
+  512,
   4,
   gamma([0.5, 0.5, 0.5] * circle * add_modulo(
-    lfo_triangle([4000, 6842, 7712]),
+    lfo_triangle([8000, 69842, 12712]),
     lamp_phase
   ))
 );

@@ -18,8 +18,13 @@ class Divide < Base
   
   def arduino_code
     [
-      "long #{@name}[3];",
       "divide(#{@numerator.name}, #{@denominator.name}, #{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
     ]
   end
 end

@@ -16,8 +16,13 @@ class Phasor < Base
 
   def arduino_code
     [
-      "long #{@name}[3];",
       "phasor(mils, #{@cycles.name}, #{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
     ]
   end
 end

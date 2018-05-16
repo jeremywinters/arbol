@@ -8,6 +8,10 @@ class Const < Base
   end
 
   def arduino_code
+    []
+  end
+
+  def top_level_scope_code
     [
       "long #{@name}[3] = {#{@value.join(',')}};"
     ]

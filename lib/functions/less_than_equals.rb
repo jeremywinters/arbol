@@ -17,8 +17,13 @@ class LessThanEquals < Base
 
   def arduino_code
     [
-      "long #{@name}[3];",
       "less_than_equals(#{@left.name}, #{@right.name}, #{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
     ]
   end
 end

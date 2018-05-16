@@ -19,8 +19,13 @@ void triangle(long mils, long phase[3], long out[3]) {
 
   def arduino_code
     [
-      "long #{@name}[3];",
       "triangle(mils, #{@phase.name}, #{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];",
     ]
   end
 end

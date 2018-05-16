@@ -10,8 +10,13 @@ class NoisePixel < Base
   )
   def arduino_code
     [
-      "long #{@name}[3];",
       "noise_pixel(#{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
     ]
   end
 end

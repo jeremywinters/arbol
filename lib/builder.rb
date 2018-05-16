@@ -56,15 +56,18 @@ def custom_arduino_script_body(structure)
   code = {}
   
   # creates an array of code for top_level_scope declarations
-  top_level_scope = []
+  top_level_scope = {}
 
   # first append the ref nodes
   ref_builders.each { |r| r.add_arduino_code(code) }
-
+  ref_builders.each { |r| r.add_top_level_scope(top_level_scope) }
+  
   # then the primary calc nodes
   t.add_arduino_code(code)
+  t.add_top_level_scope(top_level_scope)
 
   ret = []
+  tls = []
   # run tsort... then append the lines of code in the order they should be executed
   t = ts.tsort
   t.each do |func|
@@ -72,12 +75,17 @@ def custom_arduino_script_body(structure)
     code[func].each do |stmt|
       ret << stmt
     end
+    
+    tls << ''
+    top_level_scope[func].each do |stmt|
+      tls << stmt
+    end
   end
 
   # last output needs to be passed to the strip
   ret << ''
   ret << "// output"
   ret << "strip.setPixelColor(i, (byte)long_mult(255, #{t.last}[0]), (byte)long_mult(255, #{t.last}[1]), (byte)long_mult(255, #{t.last}[2]));"
-  ret
+  return tls, ret
 end
 

@@ -18,11 +18,16 @@ class AddConstrain < Base
   
   def arduino_code
     [
-      "long #{@name}[3];",
       "add_constrain(#{@op1.name}, #{@op2.name}, #{@name});"
     ]
   end
   
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
+    ]
+  end
+
   def documentation
 %{
 ### add_constrain(op1, op2)

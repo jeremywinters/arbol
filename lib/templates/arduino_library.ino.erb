@@ -2,6 +2,7 @@
 #include <Adafruit_NeoPixel.h>
 
 #define INTEGER_SCALE 8192
+#define PIXEL_COUNT <%= pixels %>
 
 long long_div(long numerator, long denominator)
 {
@@ -33,10 +34,13 @@ void setup() {
 void loop() {
   calculate_strip();
   delay(10);
-  //Serial.println('b');
-  //strip.setPixelColor(1, strip.Color(233,0,0));
-  //strip.show();
 }
+
+// beginning of top level scope definition
+
+<%= tls %>
+
+// end of top level scope definition
 
 void calculate_strip() {
   long mils = millis();

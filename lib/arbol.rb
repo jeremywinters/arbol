@@ -105,7 +105,9 @@ end
 
 def tree_to_file(tree, path)
   pp tree
-  body = custom_arduino_script_body(tree).join("\n")
+  tls, body = custom_arduino_script_body(tree)
+  tls = tls.join("\n")
+  body = body.join("\n")
   pixels = tree[:lamps]
   pin = tree[:pin]
   code = Irontofu.libs.join("\n\n")

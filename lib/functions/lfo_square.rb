@@ -17,13 +17,14 @@ void lfo_square(long mils, long cycle_ms[3], long out[3]) {
 
   def arduino_code
     [
-      "long #{@name}[3];",
       "lfo_square(mils, #{@cycle_ms.name}, #{@name});"
     ]
   end
   
-  def function_code
-
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
+    ]
   end
 end
 

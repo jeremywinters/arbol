@@ -21,8 +21,13 @@ void lfo_triangle(long mils, long cycle_ms[3], long out[3]) {
 
   def arduino_code
     [
-      "long #{@name}[3];",
       "lfo_triangle(mils, #{@cycle_ms.name}, #{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
     ]
   end
 end

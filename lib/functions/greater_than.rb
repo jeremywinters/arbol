@@ -17,8 +17,13 @@ class GreaterThan < Base
 
   def arduino_code
     [
-      "long #{@name}[3];",
       "greater_than(#{@left.name}, #{@right.name}, #{@name});"
+    ]
+  end
+
+  def top_level_scope_code
+    [
+      "long #{@name}[3];"
     ]
   end
 end
