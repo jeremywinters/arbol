@@ -3,6 +3,6 @@
 require 'arbol'
 
 tree_to_file(
-  interpret(ARGV[0]),
+  interpret(ARGV[0], binding),
   ARGV[1]
 )

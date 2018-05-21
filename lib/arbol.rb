@@ -58,7 +58,7 @@ def script_split(script)
   script.split(';').select { |l| l.strip != '' }
 end
 
-def stmts_to_structure(stmts)
+def stmts_to_structure(stmts, scope)
   refs = []
   refinjects = ['using RefineBasics; ']
   stmts.each do |stmt|
@@ -67,21 +67,21 @@ def stmts_to_structure(stmts)
       statements = "#{refinjects.join('')}#{stmt.split('=')[1]}"
       this_ref = create_ref(
         ref_name,
-        eval(statements, binding)
+        eval(statements, scope)
       )
       refinject = "#{ref_name} = ref('#{ref_name}');"
       refs << this_ref
       refinjects << refinject
     elsif stmt.match('strip')
       statements = "#{refinjects.join('')} #{stmt}"
-      retval = eval(statements, binding)
+      retval = eval(statements, scope)
       retval[:refs] = refs
       return retval
     end
   end
 end
 
-def interpret(file_path)
+def interpret(file_path, scope)
   tree = nil
   if file_path.match(/\.rb$/)
     tree = stmts_to_structure(
@@ -89,7 +89,8 @@ def interpret(file_path)
         strip_comments(
           File.read(file_path)
         )
-      )
+      ),
+      scope
     )
   elsif file_path.match(/\.json$/)
     puts "json"
