@@ -1,5 +1,5 @@
 class AddModulo < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'add_modulo', 
     AddModulo,
 %{void add_modulo(long op1[3], long op2[3], long out[3]) {

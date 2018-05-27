@@ -5,7 +5,7 @@ require 'erb'
 require_relative 'base.rb'
 
 # module used to handle the global class map
-module Irontofu
+module Arbol
   @@class_map = {}
 
   def self.class_map
@@ -27,7 +27,7 @@ end
 # new instance of the class specified by params[:type]
 def builder(params)
   puts params
-  Irontofu.class_map[params[:type]].new(params)
+  Arbol.class_map[params[:type]].new(params)
 end
 
 def custom_arduino_script_body(structure)

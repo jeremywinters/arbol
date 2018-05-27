@@ -1,5 +1,5 @@
 class Noise < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'noise', 
     Noise,
 %{void noise(long out[3]) {

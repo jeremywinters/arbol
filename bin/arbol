@@ -2,7 +2,12 @@
 
 require 'arbol'
 
-tree_to_file(
-  interpret(ARGV[0], binding),
+script_to_file(
+  ino_from_tree(
+    interpret_file(
+      ARGV[0],
+      binding
+    )
+  ),
   ARGV[1]
 )

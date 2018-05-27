@@ -1,7 +1,7 @@
+#include <malloc.h>
+#include <Adafruit_NeoPixel_ZeroDMA.h>
 
-#include <Adafruit_NeoPixel.h>
-
-#define INTEGER_SCALE 8192
+#define INTEGER_SCALE <%= integer_scale %>
 #define PIXEL_COUNT <%= pixels %>
 
 long long_div(long numerator, long denominator)
@@ -24,8 +24,8 @@ int neoPixelPin = <%= pin %>;
 // How many NeoPixels we will be using, charge accordingly
 int pixelCount = <%= pixels %>;
 
-// Instatiate the NeoPixel from the ibrary
-Adafruit_NeoPixel strip = Adafruit_NeoPixel(pixelCount, neoPixelPin, NEO_GRB + NEO_KHZ800);
+// Instatiate the NeoPixel from the library
+Adafruit_NeoPixel_ZeroDMA strip = Adafruit_NeoPixel_ZeroDMA(pixelCount, neoPixelPin, NEO_GRB + NEO_KHZ800);
 
 void setup() {
   strip.begin();

@@ -84,7 +84,7 @@ class ArbolHash < Hash
 end
 
 module RefineBasics
-  refine Fixnum do
+  refine Integer do
     def +(y)
       h = ArbolHash.new
       h[:type] = 'add'

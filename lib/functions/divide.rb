@@ -1,5 +1,5 @@
 class Divide < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'divide', 
     Divide,
 %{void divide(long numerator[3], long denominator[3], long out[3]) {

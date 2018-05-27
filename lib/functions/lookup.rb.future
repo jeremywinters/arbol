@@ -1,12 +1,12 @@
 class Lookup < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'lookup', 
     Lookup,
-%{//void lookup(long index[3], long table[][3], long table_size, long out[3]) {
-//  out[0] = table[long_mult(index[0], table_size)];
-//  out[1] = table[long_mult(index[1], table_size)];
-//  out[2] = table[long_mult(index[2], table_size)];
-//}}
+%{void lookup(long index[3], long table[][3], long table_size, long out[3]) {
+  out[0] = table[long_mult(index[0], table_size)];
+  out[1] = table[long_mult(index[1], table_size)];
+  out[2] = table[long_mult(index[2], table_size)];
+}}
   )
   
   attr_accessor :op1
@@ -32,7 +32,7 @@ end
 def lookup(table, index)
   {
     type: 'lookup',
-    table: table,
+    table: resolve_lookup(table),
     index: resolve(index)
   }
 end

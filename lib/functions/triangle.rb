@@ -1,5 +1,5 @@
 class PhaseTriangle < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'triangle', 
     PhaseTriangle,
 %{//long twice_int_scale_vec[3] = {long(INTEGER_SCALE * 2), long(INTEGER_SCALE * 2), long(INTEGER_SCALE * 2)};

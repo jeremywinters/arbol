@@ -1,5 +1,5 @@
 class Phasor < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'phasor', 
     Phasor,
 %{void phasor(long mils, long cycle[3], long out[3]) {

@@ -1,5 +1,5 @@
 class GreaterThanEquals < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'greater_than_equals', 
     GreaterThanEquals,
 %{void greater_than_equals(long left[3], long right[3], long out[3]) {

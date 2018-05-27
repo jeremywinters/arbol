@@ -36,7 +36,7 @@ alias arduino="/Applications/Arduino.app/Contents/MacOS/Arduino"
 ...which allows me to transpile the arbol file into an arduino sketch file (.ino) then write the sketch directly into the arduino without using the GUI based IDE:
 
 ```
-$ arbol example.rb example.ino ; arduino --upload --board arduino:samd:mzero_bl --port /dev/cu.usbmodem1421 example.ino.ino
+$ arbol example.rb example.ino ; arduino --upload --board arduino:samd:mzero_bl --port /dev/cu.usbmodem1421 example.ino
 ```
 
 ## Language

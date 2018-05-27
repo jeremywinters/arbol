@@ -1,5 +1,5 @@
 class Ref < Base
-  Irontofu.add_mapped_class('ref', Ref, nil)
+  Arbol.add_mapped_class('ref', Ref, nil)
   attr_accessor :identifier
   attr_accessor :ref_name
   

@@ -1,5 +1,5 @@
 class Const < Base
-  Irontofu.add_mapped_class('const', Const, nil)
+  Arbol.add_mapped_class('const', Const, nil)
   attr_accessor :value
 
   def initialize(params)

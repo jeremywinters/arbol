@@ -1,5 +1,5 @@
 class NoisePixel < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'noise_pixel', 
     NoisePixel,
 %{void noise_pixel(long out[3]) {

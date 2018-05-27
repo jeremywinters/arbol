@@ -1,5 +1,5 @@
 class Maximum < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'max', 
     Maximum,
 %{void maximum(long op1[3], long op2[3], long out[3]) {

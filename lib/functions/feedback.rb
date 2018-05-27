@@ -1,5 +1,5 @@
 class Feedback < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'feedback', 
     Feedback,
 %{void feedback(int pixel, long input[3], long feedback[3], long storage[][3], long out[3]) {

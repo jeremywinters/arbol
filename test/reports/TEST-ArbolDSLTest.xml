@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite time='0.000511' skipped='0' failures='0' errors='0' name="ArbolDSLTest" assertions='13' tests='4' timestamp="2018-05-27T12:28:08-07:00">
+  <testcase time='0.000032' file="test/dsl_test.rb" name="test_scale_correctly" assertions='4'>
+  </testcase>
+  <testcase time='0.000407' file="test/dsl_test.rb" name="test_resolve" assertions='4'>
+  </testcase>
+  <testcase time='0.000062' file="test/dsl_test.rb" name="test_remove_comments" assertions='3'>
+  </testcase>
+  <testcase time='0.000010' file="test/dsl_test.rb" name="test_coerce_array" assertions='2'>
+  </testcase>
+</testsuite>

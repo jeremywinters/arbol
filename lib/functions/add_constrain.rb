@@ -1,5 +1,5 @@
 class AddConstrain < Base
-  Irontofu.add_mapped_class(
+  Arbol.add_mapped_class(
     'add_constrain', 
     AddConstrain,
 %{void add_constrain(long op1[3], long op2[3], long out[3]) {

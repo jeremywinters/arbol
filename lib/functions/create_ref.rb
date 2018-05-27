@@ -1,7 +1,7 @@
 $refs = {}
 
 class CreateRef < Base
-  Irontofu.add_mapped_class('create_ref', CreateRef, nil)
+  Arbol.add_mapped_class('create_ref', CreateRef, nil)
   attr_accessor :identifier
   attr_accessor :value
   

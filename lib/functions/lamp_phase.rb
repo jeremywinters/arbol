@@ -1,5 +1,5 @@
 class LampPhase < Base
-  Irontofu.add_mapped_class('lamp_phase', LampPhase, nil)
+  Arbol.add_mapped_class('lamp_phase', LampPhase, nil)
   def arduino_code
     [
       "long #{@name}[3] = {this_phase, this_phase, this_phase};"
