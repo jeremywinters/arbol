@@ -1,19 +1,40 @@
 # Arbol
 
-This project started out as a way to make programming lights on the arduino more accessible to novices. Somehow... it turned into a declarative, functional metalanguage.
+This project started out as a way to make programming lights on the arduino more accessible to novices. Somehow... it turned into a declarative, functional(ish) metalanguage.
 
-Arbol is inspired by concepts such as DSP chains and modular synthesizers, but instead of processing audio signals, arbol processes 3 channel RGB streams which are displayed on neopixel chains.
+Arbol is inspired by concepts such as DSP chains and modular synthesizers, but instead of processing audio signals, arbol processes 3 channel RGB streams which are displayed on neopixel strips.
 
 This software is extremely experimental, and makes use of metaprogramming constructs such as `eval`. Think about that before running it in a rails app from your production cluster.
 
+## Arduino Compatability and DMA
+
+The current version of arbol only supports arduinos based on the Cortex M0 processors. Because we are using M0 processors, we have decided to utilize the DMA Neopixel library from Adafruit by default. This may cause issues with models such as the Arduino Due (or cheap clones).
+
+Arbol has been successfully used with Arduino M0 and Gemma M0 boards.
+
 ## Install
 
-Arbol installs as an executable by way of a ruby gem:
+### Ruby Install
+
+Arbol uses some fancy ruby features such as refinements. In order to utilize these features, arbol requires a version of ruby > 2.4.
+
+#### Install from rubygems
+
+You can install 
+
+
+#### Build from Source
+
+Arbol can be built from source and installed as follows.
 
 ```
 gem build arbol.gemspec
-gem install arbol-0.0.1.gem
+gem install arbol-0.0.2.gem
 ```
+
+### Arduino Libraries
+
+In order to take advantage of the 
 
 ## Usage
 
@@ -183,9 +204,8 @@ Check out FUNCTIONS.md for a list of all operators and function definitions.
 Ideas on the roadmap:
 
 * Create a web based UI using [blockly](https://developers.google.com/blockly/).
-* Table based lookup functions (coming soon!)
 * Reusable function declarations.
 * Ability to memoize a phase driven function chain for specified granularity of steps between 0-~1.0.
 * Input from arduino pins.
 * Midi input/output.
-* Function tree optimizer.
+* More optimization.

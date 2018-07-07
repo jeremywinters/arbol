@@ -1,6 +1,7 @@
 require 'pp'
 require_relative 'builder.rb'
 require_relative 'dsl.rb'
+require_relative 'documentation.rb'
 
 # now that class_map is created.. import all functions
 Dir.glob("#{File.dirname(__FILE__)}/functions/*.rb").each do |mod|
@@ -19,9 +20,10 @@ end
 # creates an ino file from a tree structure.
 def ino_from_tree(tree)
   pp tree
-  tls, body = custom_arduino_script_body(tree)
+  tls, cycle, body = custom_arduino_script_body(tree)
   # these are resolved inside the ERB
   tls = tls.join("\n")
+  cycle = cycle.join("\n")
   body = body.join("\n")
   integer_scale = 8192
   pixels = tree[:lamps]

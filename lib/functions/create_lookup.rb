@@ -1,9 +1,9 @@
 $tables = {}
 
-class CreateTable < Base
+class CreateLookup < Base
   Arbol.add_mapped_class(
-    'table', 
-    CreateTable, 
+    'create_lookup', 
+    CreateLookup, 
     nil
   )
   
@@ -14,14 +14,15 @@ class CreateTable < Base
     super(params)
     @identifier = params[:identifier]
     unless $tables.has_key?(@identifier)
-      $tables[@identifier] = @value
+      $tables[@identifier] = params[:value]
+      @value = params[:value]
     else
       raise "duplicate table definition #{params[:name]}"
     end
   end
 
   def param_keys
-    [:value]
+    []
   end
   
   def arduino_code
@@ -30,25 +31,32 @@ class CreateTable < Base
 
   def top_level_scope_code
     [
-      "long *#{@name} = #{@value.name};"
+      "long #{@identifier}[#{@value.length}][3] = #{table_to_cplusplus_array(@value)};"
     ]
+  end
+  
+  def table_to_cplusplus_array(t)
+    "{#{t.map {|f| f.to_s.gsub(/\[/, '{').gsub(/\]/, '}') }.join(',')}}"
   end
 end
 
+
 def resolve_lookup(val)
+  puts val
+  puts val.class
   raise "table definition must be an array" unless val.class == Array
   val.map do |v|
     case
-      when val.class == Fixnum then (1..3).map { scale_correctly(val) }
-      when val.class == Float then (1..3).map { scale_correctly(val) }
-      when val.class == Array then v.map { |i| scale_correctly(i) }
+      when [Integer, Float].include?(v.class)
+        then 3.times.map { scale_correctly(v) }
+      when v.class == Array then v.map { |i| scale_correctly(i) }
     end
   end
 end
 
 def create_table_ref(identifier, value)
   h = ArbolHash.new
-  h[:type] = 'table'
+  h[:type] = 'create_lookup'
   h[:identifier] = identifier
   h[:value] = resolve_lookup(value)
   h

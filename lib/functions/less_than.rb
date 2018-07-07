@@ -16,15 +16,48 @@ class LessThan < Base
   end
 
   def arduino_code
-    [
-      "less_than(#{@left.name}, #{@right.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "less_than(#{@left.name}, #{@right.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
-
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "less_than(#{@left.name}, #{@right.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def less_than  
+%{--
+### less\\_than(left, right)
+
+* **left** - left operand
+* **right** - right operand
+
+left < right as a logical operation returning 0 or 1.0.
+Can be used in the form `left < right`.
+
+}
+  end
+
   end
 end
 

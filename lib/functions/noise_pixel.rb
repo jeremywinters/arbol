@@ -8,6 +8,12 @@ class NoisePixel < Base
   out[2] = out[1];
 }}
   )
+  
+  def initialize(params)
+    super(params)
+    @frame_optimized = false
+  end
+  
   def arduino_code
     [
       "noise_pixel(#{@name});"
@@ -18,6 +24,21 @@ class NoisePixel < Base
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def noise_pixel 
+%{--
+### noise\\_pixel
+
+Outputs a random value for each pixel.
+
+}
+  end
+
   end
 end
 

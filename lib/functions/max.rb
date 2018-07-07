@@ -15,17 +15,49 @@ class Maximum < Base
   def param_keys
     [:op1, :op2]
   end
-  
+
   def arduino_code
-    [
-      "maximum(#{@op1.name}, #{@op2.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "maximum(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "maximum(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
 
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def max
+%{--
+### max(left, right)
+
+* **operator1**
+* **operator2**
+
+Maximum (greater) of the two operators.
+
+}
+  end
+
   end
 end
 

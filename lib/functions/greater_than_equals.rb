@@ -16,15 +16,48 @@ class GreaterThanEquals < Base
   end
 
   def arduino_code
-    [
-      "greater_than_equals(#{@left.name}, #{@right.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "greater_than_equals(#{@left.name}, #{@right.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
-
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "greater_than_equals(#{@left.name}, #{@right.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def greater_than_equals  
+%{--
+### greater\\_than\\_equals(left, right)
+
+* **left** - left operand
+* **right** - right operand
+
+left >= right as a logical operation returning 0 or 1.0.
+Can be used in the form `left >= right`.
+
+}
+  end
+
   end
 end
 

@@ -15,17 +15,49 @@ class Add < Base
   def param_keys
     [:op1, :op2]
   end
-  
-  def arduino_code
-    [
-      "add(#{@op1.name}, #{@op2.name}, #{@name});"
-    ]
-  end
 
+  def arduino_code
+    unless @frame_optimized 
+      [
+        "add(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "add(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];",
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def add   
+%{--
+### add(op1, op2)
+
+* **op1** - operator1
+* **op2** - operator2
+
+Adds op1 and op2. can also be used in the form `op1 + op2`.
+
+}
+  end
+
   end
 end
 

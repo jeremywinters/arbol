@@ -5,10 +5,10 @@ class Ref < Base
   
   def initialize(params)
     super(params)
-    puts params
     @identifier = params[:identifier]
     if $refs.has_key?(@identifier)
       @ref_name = $refs[@identifier]
+      @frame_optimized = $refs_frame_optimized[@identifier]
     else
       raise "non-existant ref #{@identifier}"
     end

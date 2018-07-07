@@ -2,6 +2,18 @@
 
 require 'arbol'
 
+# Arbol::Documentation.new.output_all_documentation
+
+unless ARGV[0]
+  puts "you need to provide an input file" 
+  exit(-1)
+end
+
+unless ARGV[1]
+  puts "you need to provide an output file" 
+  exit(-1)
+end
+
 script_to_file(
   ino_from_tree(
     interpret_file(

@@ -16,6 +16,11 @@ class FeedbackOffset < Base
   attr_accessor :feedback
   attr_accessor :offset
 
+  def initialize(params)
+    super(params)
+    @frame_optimized = false
+  end
+
   def param_keys
     [:input, :feedback, :offset]
   end
@@ -31,6 +36,26 @@ class FeedbackOffset < Base
       "long #{@name}[3];",
       "long #{@name}_storage[PIXEL_COUNT][3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def feedback_offset   
+%{--
+### feedback\_offset(input, feedback, offset)
+
+* **input**
+* **feedback**
+* **offset**
+
+Returns the greatest of the input or the feedback value at the offset (0-~1.0) 
+from the current pixel.
+
+}
+  end
+
   end
 end
 

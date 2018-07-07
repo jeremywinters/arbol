@@ -17,15 +17,47 @@ class Divide < Base
   end
   
   def arduino_code
-    [
-      "divide(#{@numerator.name}, #{@denominator.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "divide(#{@numerator.name}, #{@denominator.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
-
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "divide(#{@numerator.name}, #{@denominator.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def divide   
+%{--
+### divide(numerator, denominator)
+
+* **numerator**
+* **denominator**
+
+Division. Also accepts the form `numerator / denominator`.
+
+}
+  end
+
   end
 end
 

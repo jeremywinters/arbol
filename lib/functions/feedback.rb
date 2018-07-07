@@ -14,7 +14,12 @@ class Feedback < Base
   
   attr_accessor :input
   attr_accessor :feedback
-  
+
+  def initialize(params)
+    super(params)
+    @frame_optimized = false
+  end
+ 
   def param_keys
     [:input, :feedback]
   end
@@ -30,6 +35,24 @@ class Feedback < Base
       "long #{@name}[3];",
       "long #{@name}_storage[PIXEL_COUNT][3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def feedback  
+%{--
+### feedback(input, feedback)
+
+* **input**
+* **feedback**
+
+Returns the greatest of the input or the feedback value.
+
+}
+  end
+
   end
 end
 

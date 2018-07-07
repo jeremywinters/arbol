@@ -309,8 +309,10 @@ end
 
 class Base
   attr_accessor :name
-
+  attr_accessor :frame_optimized
+  
   def initialize(params)
+    @frame_optimized = true # default
     @name = "#{self.class}_#{SecureRandom.uuid.to_s.gsub('-','')}"
     param_keys.each do |k|
       self.send("#{k.to_sym}=", params[k])
@@ -320,9 +322,9 @@ class Base
 
   def buildit
     param_keys.each do |k|
-      puts "resolving #{k}"
+      # puts "resolving #{k}"
       self.send("#{k.to_sym}=", builder(self.send("#{k.to_s}")))
-      puts "#{k} resolved"
+      # puts "#{k} resolved"
     end
   end
 
@@ -336,13 +338,33 @@ class Base
   end
 
   def arduino_code
-    ''
+    []
   end
-
+  
+  def resolve_frame_optimized
+    # first resolve the children
+    param_keys.each do |k|
+      self.send("#{k}").resolve_frame_optimized
+    end
+    
+    # check to see if any of the children can not be optimized
+    param_keys.each do |k|
+      # if so... mark self as false
+      if self.send("#{k}").frame_optimized == false
+        @frame_optimized = false
+      end
+    end
+  end
+  
+  # only executed once per cycle
+  def cycle_level_arduino_code
+    []
+  end
+  
   # code to be executed in the top level scope.
   # used for constant declaration
   def top_level_scope_arduino_code
-    nil
+    []
   end
 
   def append_tsortable(tsortable)
@@ -359,6 +381,13 @@ class Base
     end
   end
 
+  def add_cycle_level_scope(ir)
+    ir[@name] = cycle_level_arduino_code
+    param_keys.each do |k|
+      self.send("#{k}").add_cycle_level_scope(ir)
+    end
+  end
+  
   def add_top_level_scope(ir)
     ir[@name] = top_level_scope_code
     param_keys.each do |k|

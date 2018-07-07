@@ -51,6 +51,39 @@ class ArbolDSLTest < Minitest::Test
       resolve(expected)
     )
   end
+
+  def catch_error?
+    begin
+      yield
+      return false
+    rescue => e
+      puts "ERROR ERROR ERROR ERROR"
+      puts e.message
+      return true
+    end
+  end
+      
+  def test_resolve_pin_reference
+    assert_equal(
+      'A0',
+      resolve_pin_reference('A0')
+    )
+    
+    assert_equal(
+      '9',
+      resolve_pin_reference('9')
+    )
+    
+    assert_equal(
+      true,
+      catch_error? { resolve_pin_reference('B0') }
+    )
+    
+    assert_equal(
+      false,
+      catch_error? { resolve_pin_reference('A1') }
+    )
+  end
   
   def test_remove_comments
     assert_equal(

@@ -20,15 +20,47 @@ void lfo_triangle(long mils, long cycle_ms[3], long out[3]) {
   end
 
   def arduino_code
-    [
-      "lfo_triangle(mils, #{@cycle_ms.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "lfo_triangle(mils, #{@cycle_ms.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "lfo_triangle(mils, #{@cycle_ms.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
 
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def lfo_triangle 
+%{--
+### lfo\\_triangle(cycle\\_ms)
+
+* **cycle\\_ms** - cycle length expressed as milliseconds
+
+Outputs a triangle wave. Note that the cycle length value is interpreted literally
+as milliseconds, so you should use integer constants as input.
+
+}
+  end
+
   end
 end
 

@@ -16,15 +16,47 @@ void lfo_square(long mils, long cycle_ms[3], long out[3]) {
   end
 
   def arduino_code
-    [
-      "lfo_square(mils, #{@cycle_ms.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "lfo_square(mils, #{@cycle_ms.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "lfo_square(mils, #{@cycle_ms.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
   
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def lfo_square  
+%{--
+### lfo\\_square(cycle\\_ms)
+
+* **cycle\\_ms** - cycle length expressed as milliseconds
+
+Outputs a square wave. Note that the cycle length value is interpreted literally
+as milliseconds, so you should use integer constants as input.
+
+}
+  end
+
   end
 end
 

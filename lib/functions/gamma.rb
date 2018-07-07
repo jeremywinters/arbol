@@ -13,7 +13,12 @@ void gamma(long input[3], long out[3]) {
   )
   
   attr_accessor :input
-  
+
+  def initialize(params)
+    super(params)
+    @frame_optimized = false
+  end
+
   def param_keys
     [:input]
   end
@@ -28,6 +33,23 @@ void gamma(long input[3], long out[3]) {
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def gamma  
+%{--
+### gamma(input)
+
+* **input**
+
+Returns gamma corrected input. This makes the colors look much better.
+
+}
+  end
+
   end
 end
 

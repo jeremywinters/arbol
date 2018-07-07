@@ -1,5 +1,7 @@
 strip(
   512,
   4,
-  gammma(lamp_phase) # brightness is equal to the lamp number
+  # brightness is equal to the lamp number
+  # gamma correction is applied
+  gamma(lamp_phase)
 )

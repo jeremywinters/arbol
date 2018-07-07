@@ -1,4 +1,5 @@
 $refs = {}
+$refs_frame_optimized = {}
 
 class CreateRef < Base
   Arbol.add_mapped_class('create_ref', CreateRef, nil)
@@ -8,8 +9,10 @@ class CreateRef < Base
   def initialize(params)
     super(params)
     @identifier = params[:identifier]
+    resolve_frame_optimized
     unless $refs.has_key?(@identifier)
       $refs[@identifier] = @name
+      $refs_frame_optimized[@identifier] = @frame_optimized
     else
       raise "duplicate ref definition #{params[:name]}"
     end
@@ -32,8 +35,14 @@ end
 
 def create_ref(identifier, value)
   h = ArbolHash.new
-  h[:type] = 'create_ref'
-  h[:identifier] = identifier
-  h[:value] = resolve(value)
+  if value.class == ArbolTable
+    h[:type] = 'create_lookup'
+    h[:identifier] = identifier
+    h[:value] = resolve_lookup(value.table)
+  else
+    h[:type] = 'create_ref'
+    h[:identifier] = identifier
+    h[:value] = resolve(value)
+  end
   h
 end

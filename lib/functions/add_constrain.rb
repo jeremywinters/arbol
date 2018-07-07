@@ -15,11 +15,25 @@ class AddConstrain < Base
   def param_keys
     [:op1, :op2]
   end
-  
+
   def arduino_code
-    [
-      "add_constrain(#{@op1.name}, #{@op2.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "add_constrain(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "add_constrain(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
   
   def top_level_scope_code
@@ -27,16 +41,23 @@ class AddConstrain < Base
       "long #{@name}[3];"
     ]
   end
+end
 
-  def documentation
-%{
-### add_constrain(op1, op2)
+module Arbol
+  class Documentation
+
+def add_constrain    
+%{--
+### add\_constrain(op1, op2)
 
 * **op1** - operator1
 * **op2** - operator2
 
 Adds op1 and op2, then constrains the result between 0.0-~1.0.
+
 }
+end
+
   end
 end
 

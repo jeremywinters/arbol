@@ -15,17 +15,49 @@ class Minimum < Base
   def param_keys
     [:op1, :op2]
   end
-  
-  def arduino_code
-    [
-      "minimum(#{@op1.name}, #{@op2.name}, #{@name});"
-    ]
-  end
 
+  def arduino_code
+    unless @frame_optimized 
+      [
+        "minimum(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "minimum(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def min 
+%{--
+### min(left, right)
+
+* **operator1**
+* **operator2**
+
+Minimum (least) of the two operators.
+
+}
+  end
+
   end
 end
 

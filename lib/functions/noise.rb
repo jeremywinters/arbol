@@ -8,6 +8,12 @@ class Noise < Base
   out[2] = random(INTEGER_SCALE);
 }}
   )
+
+  def initialize(params)
+    super(params)
+    @frame_optimized = false
+  end
+   
   def arduino_code
     [
       "noise(#{@name});"
@@ -18,6 +24,21 @@ class Noise < Base
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def noise
+%{--
+### noise
+
+Outputs a random value for RGB of each pixel.
+
+}
+  end
+
   end
 end
 

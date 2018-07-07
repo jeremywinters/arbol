@@ -26,23 +26,27 @@ end
 
 # new instance of the class specified by params[:type]
 def builder(params)
-  puts params
+  # puts params
   Arbol.class_map[params[:type]].new(params)
 end
 
 def custom_arduino_script_body(structure)
   ref_builders = []
   structure[:refs].each do |ref|
-    ref_builders << builder(
+    this_ref = builder(
       ref
     )
+    this_ref.resolve_frame_optimized
+    ref_builders << this_ref
   end
 
   # run the builder
   t = builder(
     structure[:calc]
   )
-
+  
+  t.resolve_frame_optimized
+  
   # create a tsortable hash and populate it with the nodes
   ts = TsortableHash.new
 
@@ -53,39 +57,46 @@ def custom_arduino_script_body(structure)
   t.append_tsortable(ts)
 
   # creates a hash containing all the code keyed by node name
-  code = {}
+  pixel_scope_code = {}
   
-  # creates an array of code for top_level_scope declarations
-  top_level_scope = {}
+  # creates an hash of code for top_level_scope declarations
+  top_level_scope_code = {}
+  
+  # contains cycle level code
+  cycle_scope_code = {}
 
   # first append the ref nodes
-  ref_builders.each { |r| r.add_arduino_code(code) }
-  ref_builders.each { |r| r.add_top_level_scope(top_level_scope) }
-  
+  ref_builders.each { |r| r.add_arduino_code(pixel_scope_code) }
+  ref_builders.each { |r| r.add_cycle_level_scope(cycle_scope_code) }
+  ref_builders.each { |r| r.add_top_level_scope(top_level_scope_code) }
+   
   # then the primary calc nodes
-  t.add_arduino_code(code)
-  t.add_top_level_scope(top_level_scope)
+  t.add_arduino_code(pixel_scope_code)
+  t.add_cycle_level_scope(cycle_scope_code)
+  t.add_top_level_scope(top_level_scope_code)
 
-  ret = []
-  tls = []
+  pixel_scope = []
+  top_level_scope = []
+  cycle_scope = []
   # run tsort... then append the lines of code in the order they should be executed
   t = ts.tsort
   t.each do |func|
-    ret << ''
-    code[func].each do |stmt|
-      ret << stmt
+    pixel_scope_code[func].each do |stmt|
+      pixel_scope << stmt
     end
     
-    tls << ''
-    top_level_scope[func].each do |stmt|
-      tls << stmt
+    cycle_scope_code[func].each do |stmt|
+      cycle_scope << stmt
+    end
+    
+    top_level_scope_code[func].each do |stmt|
+      top_level_scope << stmt
     end
   end
 
   # last output needs to be passed to the strip
-  ret << ''
-  ret << "// output"
-  ret << "strip.setPixelColor(i, (byte)long_mult(255, #{t.last}[0]), (byte)long_mult(255, #{t.last}[1]), (byte)long_mult(255, #{t.last}[2]));"
-  return tls, ret
+  pixel_scope << ''
+  pixel_scope << "// output"
+  pixel_scope << "strip.setPixelColor(i, (byte)long_mult(255, #{t.last}[0]), (byte)long_mult(255, #{t.last}[1]), (byte)long_mult(255, #{t.last}[2]));"
+  return top_level_scope, cycle_scope, pixel_scope
 end
-

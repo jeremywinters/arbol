@@ -18,15 +18,46 @@ void triangle(long mils, long phase[3], long out[3]) {
   end
 
   def arduino_code
-    [
-      "triangle(mils, #{@phase.name}, #{@name});"
-    ]
+    unless @frame_optimized 
+      [
+        "triangle(mils, #{@phase.name}, #{@name});"
+      ]
+    else
+      []
+    end
   end
-
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "triangle(mils, #{@phase.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];",
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def triangle 
+%{--
+### triangle(phase)
+
+* **phase**
+
+`phase` input 0.0-1.0 input is transformed into a triangle.
+
+}
+  end
+
   end
 end
 

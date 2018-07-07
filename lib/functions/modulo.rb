@@ -15,17 +15,49 @@ class Modulo < Base
   def param_keys
     [:op1, :op2]
   end
-  
-  def arduino_code
-    [
-      "modulo(#{@op1.name}, #{@op2.name}, #{@name});"
-    ]
-  end
 
+  def arduino_code
+    unless @frame_optimized 
+      [
+        "modulo(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
+  def cycle_level_arduino_code
+    if @frame_optimized
+      [
+        "modulo(#{@op1.name}, #{@op2.name}, #{@name});"
+      ]
+    else
+      []
+    end
+  end
+  
   def top_level_scope_code
     [
       "long #{@name}[3];"
     ]
+  end
+end
+
+module Arbol
+  class Documentation
+
+  def mod 
+%{--
+### mod(operator1, operator2)
+
+* **operator1**
+* **operator2**
+
+Modulo of the two operators. Can also be used with the form `operator1 % operator2`.
+
+}
+  end
+
   end
 end
 

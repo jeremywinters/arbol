@@ -1,4 +1,5 @@
 #include <malloc.h>
+#include <Thread.h>
 #include <Adafruit_NeoPixel_ZeroDMA.h>
 
 #define INTEGER_SCALE <%= integer_scale %>
@@ -20,20 +21,28 @@ byte byte_mult(byte op1, byte op2)
 }
 
 int neoPixelPin = <%= pin %>;
+int pixelCount = PIXEL_COUNT;
 
-// How many NeoPixels we will be using, charge accordingly
-int pixelCount = <%= pixels %>;
+
+<%= code %>
+
+//END OF ARBOL LIBRARY
 
 // Instatiate the NeoPixel from the library
 Adafruit_NeoPixel_ZeroDMA strip = Adafruit_NeoPixel_ZeroDMA(pixelCount, neoPixelPin, NEO_GRB + NEO_KHZ800);
 
+Thread calculate_strip_thread = Thread();
+
 void setup() {
+  analogReadResolution(12);
+  
+  calculate_strip_thread.setInterval(33);
+  calculate_strip_thread.onRun(calculate_strip);
   strip.begin();
 }
 
 void loop() {
-  calculate_strip();
-  delay(10);
+  if(calculate_strip_thread.shouldRun()) calculate_strip_thread.run();
 }
 
 // beginning of top level scope definition
@@ -46,7 +55,14 @@ void calculate_strip() {
   long mils = millis();
   for (int i=0; i < pixelCount; i++) {
     long this_phase = long_div(i, pixelCount - 1);
-// beginning of generated code
+    if(i == 0) {
+// beginning of code that executes once per frame
+
+<%= cycle %>
+
+//
+    }
+// beginning of code that executes for every pixel
 
 <%= body %>
 
@@ -55,11 +71,5 @@ void calculate_strip() {
   strip.show();
 }
 
-<%= code %>
 
-void maxfunction(long op1[3], long op2[3], long out[3]) {
-  out[0] = max(op1[0], op2[0]);
-  out[1] = max(op1[1], op2[1]);
-  out[2] = max(op1[2], op2[2]);
-}
 
