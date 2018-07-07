@@ -20,21 +20,28 @@ Arbol uses some fancy ruby features such as refinements. In order to utilize the
 
 #### Install from rubygems
 
-You can install 
+You can install arbol using gem:
 
+```
+$ gem install arbol
+```
 
 #### Build from Source
 
 Arbol can be built from source and installed as follows.
 
 ```
-gem build arbol.gemspec
-gem install arbol-0.0.2.gem
+$ gem build arbol.gemspec
+$ gem install arbol-0.0.2.gem
 ```
 
-### Arduino Libraries
+### Arduino IDE
 
-In order to take advantage of the 
+In order to use the M0 (SAMD) and DMA, you need to install the necessary libraries into your arduino IDE.
+
+Please refer to the Adafruit documentation:
+
+[https://learn.adafruit.com/dma-driven-neopixels/overview]()
 
 ## Usage
 
@@ -45,20 +52,10 @@ Put your arbol code in a file... then pass the file name to the arbol command li
 Try the example included in the repo.
 
 ```
-$ arbol example.rb example.ino
+$ arbol examples/example_02.rb example.ino
 ```
 
-Later versions of the Arduino IDE have a command line tool that you can use for compiling and loading sketches. I add the following to my `~/.bash_profile`:
-
-```
-alias arduino="/Applications/Arduino.app/Contents/MacOS/Arduino"
-```
-
-...which allows me to transpile the arbol file into an arduino sketch file (.ino) then write the sketch directly into the arduino without using the GUI based IDE:
-
-```
-$ arbol example.rb example.ino ; arduino --upload --board arduino:samd:mzero_bl --port /dev/cu.usbmodem1421 example.ino
-```
+In the case above, `example.ino` can be opened with the arduino IDE, then compiled and uploaded to your board.
 
 ## Language
 
