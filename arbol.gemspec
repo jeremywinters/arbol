@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = 'arbol'
-  s.version     = '0.0.2'
+  s.version     = '0.0.3'
   s.date        = '2018-07-07'
   s.summary     = "functional streams for neopixel strips"
   s.description = "define DSP-like function chains for your lights"

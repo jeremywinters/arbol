@@ -57,19 +57,56 @@ $ arbol examples/example_02.rb example.ino
 
 In the case above, `example.ino` can be opened with the arduino IDE, then compiled and uploaded to your board.
 
+Note: I am working on a way to do everything from the command line... but the arduino CLI command has some issues with finding the external libraries (DMA).
+
 ## Language
 
 Arbol is a declarative, functional language. Technically, the syntax is a ruby DSL, but it shouldn't be treated as, or mixed with other ruby.
 
-Arbol allows you to define a function chain which gets applied to strip of LEDs. The functions are driven by 3 primary types of input:
+Arbol allows you to define a function chain which gets applied to strip of LEDs. The functions are driven by 4 primary types of input:
 
 * `mils` - milliseconds that the arduino has been running. `mils` is not a value you use directly, it is used (under the covers) to calculate time based functions (such as `phasor`).
 * `lamp_phase` - value between 0-1 indicating which lamp in the strip is being calculated, 0 being the first lamp, and 1 being the last, and all the other lamps in-between.
 * constants - hard coded numbers passed to functions.
+* input from external sensors - using the `analog_pin` function, you can measure the value of a sensor, which then becomes a value used to calculate your function.
 
-Let's talk more about constants.. and numbers in general!
+### What happens inside the Arduino?
+
+Arbol programs animate pixel LEDs at 30 frames per second. For each frame, every pixel is calculated based upon the function tree defined in your program.
+
+So... let's say that you have a simple program such as the one below:
+
+```
+strip(
+  512, # number of pixels in the strip
+  11,  # the arduino pin that the LED strip is connected to
+  analog_pin('A1') >= lamp_phase
+)
+```
+
+In the above program... the execution at run time will go something like this:
+
+For every frame.. the voltage value at arduino pin A1 will be sampled. This happens once per frame, at the beginning of the frame calculation. The value sampled will be stored in a variable, and will not change until the next frame. 
+
+In this example... we will assume that the value sampled is 0.5.
+
+For each pixel (all 512 of them) the `lamp_phase` function will be calculated:
+
+* lamp 0 (the first pixel) will set `lamp_phase` to 0
+* lamp 1 (the second pixel) will set `lamp_phase` to 1 / 512
+* lamp n will set `lamp_phase` to n / number of pixels
+
+For any pixel... `lamp_phase` will be set to a number between 0 and 1.0.
+
+Our program indicates that the value sent to the pixel should be calculated as `analog_pin('A1') >= lamp_phase`. 
+
+For lamp 0: `(0.5 >= 0.0) = 1.0)`... so the lamp will be set to full white.
+
+
 
 ### Numbers and Constants
+
+Let's talk more about constants.. and numbers in general!
 
 #### Integer scale and floats
 
